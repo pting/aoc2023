@@ -1,6 +1,6 @@
 """01: PROBLEM NAME"""
 import aoc.util
-
+import re
 
 # all solutions should subclass the `Solver` exposed by `aoc.util`
 # this class MUST be called Solver for the CLI discovery to work
@@ -8,14 +8,76 @@ class Solver(aoc.util.Solver):
     def __init__(self, input: str):
         # sets self.input to the provided input
         super(Solver, self).__init__(input)
-
-        # optionally do something with self.input, like parsing it to a more
-        # useful representation and storing it in the instance
+        self.lines = self.input.splitlines()
+        self.map = [
+            ("one", "o1ne"),
+            ("two", "t2wo"),
+            ("three", "t3hree"),
+            ("four", "f4our"),
+            ("five", "f5ive"),
+            ("six", "s6ix"),
+            ("seven", "s7even"),
+            ("eight", "e8ight"),
+            ("nine", "n9ine")
+        ]
+        
 
     def part_one(self) -> int:
-        # TODO: actually return the answer
-        return 0
+        sum = 0
+        for l in self.lines:
+            nums = []
+            for c in l:
+                if c in "0123456789":
+                    nums.append(c)
 
+            if len(nums) > 1:
+                number = nums[0] + nums[-1]
+            elif len(nums) == 1:
+                number = nums[0] + nums[0]
+            else:
+                number = 0
+
+            n = int(str(number))
+            sum += n
+        return sum
+    
+    
     def part_two(self) -> int:
-        # TODO: actually return the answer
-        return 0
+        def replacenum(line):
+            first = []
+            for s, d in self.map:
+                indexes = [m.start() for m in re.finditer(s, line)]
+                for i in indexes:
+                    first.append([i, (s, d)])
+            first.sort()
+            
+            if len(first) > 1:
+                _, (s, d) = first[0]
+                line = re.sub(s, d, line, 1)
+                _, (s, d) = first[-1]
+                rev = re.sub(s[::-1], d, line[::-1], 1)
+                line = rev[::-1]
+            if len(first) == 1:
+                _, (s, d) = first[0]
+                line = re.sub(s, d, line, 1)
+                
+            return line
+        
+        sum = 0
+        for l in self.lines:
+            line = replacenum(l)
+            nums = []
+            
+            for c in line:
+                if c in "0123456789":
+                    nums.append(c)
+            if len(nums) > 1:
+                number = nums[0] + nums[-1]
+            elif len(nums) == 1:
+                number = nums[0] + nums[0]
+            else:
+                number = 0
+
+            n = int(str(number))
+            sum += n
+        return sum
