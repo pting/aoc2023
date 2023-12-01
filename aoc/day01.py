@@ -10,15 +10,15 @@ class Solver(aoc.util.Solver):
         super(Solver, self).__init__(input)
         self.lines = self.input.splitlines()
         self.map = [
-            ("one", "o1ne"),
-            ("two", "t2wo"),
-            ("three", "t3hree"),
-            ("four", "f4our"),
-            ("five", "f5ive"),
-            ("six", "s6ix"),
-            ("seven", "s7even"),
+            ("one", "o1e"),
+            ("two", "t2o"),
+            ("three", "t3ree"),
+            ("four", "f4ur"),
+            ("five", "f5ve"),
+            ("six", "s6x"),
+            ("seven", "s7ven"),
             ("eight", "e8ight"),
-            ("nine", "n9ine")
+            ("nine", "n9ne")
         ]
         
 
@@ -27,18 +27,18 @@ class Solver(aoc.util.Solver):
         for l in self.lines:
             nums = []
             for c in l:
-                if c in "0123456789":
+                if c.isdigit():
                     nums.append(c)
+                    break
+            
+            for c in l[::-1]:
+                if c.isdigit():
+                    nums.append(c)
+                    break
+                    
+            if len(nums) > 0:
+                sum += (int(nums[0]) * 10) + int(nums[-1])
 
-            if len(nums) > 1:
-                number = nums[0] + nums[-1]
-            elif len(nums) == 1:
-                number = nums[0] + nums[0]
-            else:
-                number = 0
-
-            n = int(str(number))
-            sum += n
         return sum
     
     
@@ -69,15 +69,16 @@ class Solver(aoc.util.Solver):
             nums = []
             
             for c in line:
-                if c in "0123456789":
+                if c.isdigit():
                     nums.append(c)
-            if len(nums) > 1:
-                number = nums[0] + nums[-1]
-            elif len(nums) == 1:
-                number = nums[0] + nums[0]
-            else:
-                number = 0
+                    break
+            
+            for c in line[::-1]:
+                if c.isdigit():
+                    nums.append(c)
+                    break
+                    
+            if len(nums) > 0:
+                sum += (int(nums[0]) * 10) + int(nums[-1])
 
-            n = int(str(number))
-            sum += n
         return sum
