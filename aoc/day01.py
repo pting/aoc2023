@@ -14,7 +14,7 @@ class Solver(aoc.util.Solver):
         ("six", "6"),
         ("seven", "7n"),
         ("eight", "e8t"),
-        ("nine", "n9")
+        ("nine", "n9e")
     ]
 
     def __init__(self, input: str):
