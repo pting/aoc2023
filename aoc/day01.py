@@ -75,7 +75,6 @@ class Solver(aoc.util.Solver):
                     if i + 3 < n and l[i+1] == 'i' and l[i+2] == 'n' and l[i+3] == 'e':
                         l[i+1] = '9'
             
-            nums = [0, 0]
             for c in l:
                 if c.isdigit():
                     nums[0] = c
