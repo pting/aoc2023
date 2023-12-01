@@ -12,13 +12,13 @@ class Solver(aoc.util.Solver):
         self.map = [
             ("one", "o1e"),
             ("two", "t2o"),
-            ("three", "t3ree"),
-            ("four", "f4ur"),
-            ("five", "f5ve"),
-            ("six", "s6x"),
-            ("seven", "s7ven"),
-            ("eight", "e8ight"),
-            ("nine", "n9ne")
+            ("three", "t3e"),
+            ("four", "4"),
+            ("five", "5e"),
+            ("six", "6"),
+            ("seven", "7n"),
+            ("eight", "e8t"),
+            ("nine", "n9")
         ]
         
 
@@ -36,8 +36,8 @@ class Solver(aoc.util.Solver):
                     nums.append(c)
                     break
                     
-            if len(nums) > 0:
-                sum += (int(nums[0]) * 10) + int(nums[-1])
+            if nums:
+                sum += int("".join(nums))
 
         return sum
     
@@ -45,21 +45,8 @@ class Solver(aoc.util.Solver):
     def part_two(self) -> int:
         sum = 0
         for l in self.lines:
-            first = []
-            for s, d in self.map:
-                indexes = [m.start() for m in re.finditer(s, l)]
-                for i in indexes:
-                    first.append([i, (s, d)])
-            first.sort()
-            
-            if len(first) > 1:
-                _, (s, d) = first[0]
-                l = re.sub(s, d, l, 1)
-                _, (s, d) = first[-1]
-                l = (re.sub(s[::-1], d, l[::-1], 1))[::-1]
-            if len(first) == 1:
-                _, (s, d) = first[0]
-                l = re.sub(s, d, l, 1)
+            for old, new in self.map:
+                l = re.sub(old, new, l)
                 
             nums = []
             
@@ -68,12 +55,12 @@ class Solver(aoc.util.Solver):
                     nums.append(c)
                     break
             
-            for c in l[::-1]:
+            for c in reversed(l):
                 if c.isdigit():
                     nums.append(c)
                     break
                     
-            if len(nums) > 0:
-                sum += (int(nums[0]) * 10) + int(nums[-1])
+            if nums:
+                sum += int("".join(nums))
 
         return sum
