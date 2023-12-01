@@ -43,37 +43,32 @@ class Solver(aoc.util.Solver):
     
     
     def part_two(self) -> int:
-        def replacenum(line):
+        sum = 0
+        for l in self.lines:
             first = []
             for s, d in self.map:
-                indexes = [m.start() for m in re.finditer(s, line)]
+                indexes = [m.start() for m in re.finditer(s, l)]
                 for i in indexes:
                     first.append([i, (s, d)])
             first.sort()
             
             if len(first) > 1:
                 _, (s, d) = first[0]
-                line = re.sub(s, d, line, 1)
+                l = re.sub(s, d, l, 1)
                 _, (s, d) = first[-1]
-                rev = re.sub(s[::-1], d, line[::-1], 1)
-                line = rev[::-1]
+                l = (re.sub(s[::-1], d, l[::-1], 1))[::-1]
             if len(first) == 1:
                 _, (s, d) = first[0]
-                line = re.sub(s, d, line, 1)
+                l = re.sub(s, d, l, 1)
                 
-            return line
-        
-        sum = 0
-        for l in self.lines:
-            line = replacenum(l)
             nums = []
             
-            for c in line:
+            for c in l:
                 if c.isdigit():
                     nums.append(c)
                     break
             
-            for c in line[::-1]:
+            for c in l[::-1]:
                 if c.isdigit():
                     nums.append(c)
                     break
