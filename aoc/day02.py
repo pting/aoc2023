@@ -10,14 +10,14 @@ class Solver(aoc.util.Solver):
     def __init__(self, input: str):
         # sets self.input to the provided input
         super(Solver, self).__init__(input)
+        self.ret1 = 0
+        self.ret2 = 0
 
-        self.map = {}
         for l in self.input.splitlines():
             tokens = l.split(":")
             if not tokens:
                 continue
-            game = int(tokens[0].split()[1])
-            self.map[game] = []
+            id = int(tokens[0].split()[1])
             tokens[1] = tokens[1].replace(';', ',')
 
             red, green, blue = 0, 0, 0
@@ -30,21 +30,15 @@ class Solver(aoc.util.Solver):
                         green = max(green, int(r[0]))
                     case "blue":
                         blue = max(blue, int(r[0]))
-            self.map[game].append(red)
-            self.map[game].append(green)
-            self.map[game].append(blue)
+            if red <= 12 and green <= 13 and blue <= 14:
+                self.ret1 += id
+            self.ret2 += red * green * blue
 
 
     def part_one(self) -> int:
-        ret = 0
-        for id, rounds in self.map.items():
-            if rounds[0] <= 12 and rounds[1] <= 13 and rounds[2] <= 14:
-                ret += id
-        return ret
+        return self.ret1
     
         
     def part_two(self) -> int:
-        ret = 0
-        for _, rounds in self.map.items():
-            ret += rounds[0] * rounds[1] * rounds[2]
-        return ret
+        return self.ret2
+    

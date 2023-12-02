@@ -7,8 +7,9 @@ import re
 # all solutions should subclass the `Solver` exposed by `aoc.util`
 # this class MUST be called Solver for the CLI discovery to work
 class Solver(aoc.util.Solver):
-    # Get list of all numbers in input
-    pattern = re.compile(r"-?\d+")
+    # Get list of all numbers or all words in input
+    numberpattern = re.compile(r"-?\d+")
+    wordpattern = re.compile(r"[\w']+")
     # x1, y1, x2, y2 = map(int, pattern.findall(l))
     # mylist = list(map(int, pattern.findall(l)))
 
