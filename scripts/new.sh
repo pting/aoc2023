@@ -31,7 +31,13 @@ touch "$EXAMPLE_NAME"
 
 echo "> replacing markers"
 # replace the DAY makers with the current day
-sed -i "s/DAY/$PADDED_DAY/g" "$MOD_NAME"
-sed -i "s/DAY/$PADDED_DAY/g" "$TEST_NAME"
+if [[ $OSTYPE == 'darwin'* ]]; then
+    # sigh
+    sed -i '' -e "s/DAY/$PADDED_DAY/g" "$MOD_NAME"
+    sed -i '' -e "s/DAY/$PADDED_DAY/g" "$TEST_NAME"
+else
+    sed -i "s/DAY/$PADDED_DAY/g" "$MOD_NAME"
+    sed -i "s/DAY/$PADDED_DAY/g" "$TEST_NAME"
+fi
 
 echo "> done"
