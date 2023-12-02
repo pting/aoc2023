@@ -18,52 +18,33 @@ class Solver(aoc.util.Solver):
                 continue
             game = int(tokens[0].split()[1])
             self.map[game] = []
-            rounds = tokens[1].split(";")
-            for r in rounds:
-                cubes = r.split(",")
-                rnd = []
-                for c in cubes:
-                    rnd.append(c.split())
-                self.map[game].append(rnd)
-            
+            tokens[1] = tokens[1].replace(';', ',')
+
+            red, green, blue = 0, 0, 0
+            for pull in tokens[1].split(','):
+                r = pull.split()
+                match r[1]:
+                    case "red":
+                        red = max(red, int(r[0]))
+                    case "green":
+                        green = max(green, int(r[0]))
+                    case "blue":
+                        blue = max(blue, int(r[0]))
+            self.map[game].append(red)
+            self.map[game].append(green)
+            self.map[game].append(blue)
+
 
     def part_one(self) -> int:
         ret = 0
         for id, rounds in self.map.items():
-            red, green, blue = 0, 0, 0
-            for r in rounds:
-                # print(r)
-                for pull in r:
-                    match pull[1]:
-                        case "red":
-                            red = max(red, int(pull[0]))
-                        case "green":
-                            green = max(green, int(pull[0]))
-                        case "blue":
-                            blue = max(blue, int(pull[0]))
-                
-            # print(f"red: {red}, green: {green}, blue: {blue}")
-            if red <= 12 and green <= 13 and blue <= 14:
+            if rounds[0] <= 12 and rounds[1] <= 13 and rounds[2] <= 14:
                 ret += id
         return ret
     
         
     def part_two(self) -> int:
         ret = 0
-        for id, rounds in self.map.items():
-            red, green, blue = 0, 0, 0
-            for r in rounds:
-                # print(r)
-                for pull in r:
-                    match pull[1]:
-                        case "red":
-                            red = max(red, int(pull[0]))
-                        case "green":
-                            green = max(green, int(pull[0]))
-                        case "blue":
-                            blue = max(blue, int(pull[0]))
-                
-            # print(f"red: {red}, green: {green}, blue: {blue}")
-            ret += red * green * blue
-
+        for _, rounds in self.map.items():
+            ret += rounds[0] * rounds[1] * rounds[2]
         return ret
