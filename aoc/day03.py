@@ -10,6 +10,7 @@ class Solver(aoc.util.Solver):
     def __init__(self, input: str):
         self.scem = []
         self.sym = []
+        self.stars = []
 
         # sets self.input to the provided input
         super(Solver, self).__init__(input)
@@ -18,7 +19,9 @@ class Solver(aoc.util.Solver):
             self.scem.append(row)
             for c, v in enumerate(row):
                 if not v.isdigit() and not v == '.':
-                    self.sym.append([r, c])        
+                    self.sym.append([r, c])
+                    if v == '*':
+                        self.stars.append([r, c])
         
     
     def getAdj(self, r, c):
@@ -63,7 +66,7 @@ class Solver(aoc.util.Solver):
 
     def part_two(self) -> int:
         ret = 0
-        for row, col in self.sym:
+        for row, col in self.stars:
             seen = set()
             nums = []
             for r, c in self.getAdj(row, col):
