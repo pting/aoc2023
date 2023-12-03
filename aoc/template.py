@@ -16,9 +16,8 @@ class Solver(aoc.util.Solver):
     def __init__(self, input: str):
         # sets self.input to the provided input
         super(Solver, self).__init__(input)
-
-        # optionally do something with self.input, like parsing it to a more
-        # useful representation and storing it in the instance
+        self.lines = self.input.splitlines()
+        
 
     def part_one(self) -> int:
         # TODO: actually return the answer
