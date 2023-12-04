@@ -10,10 +10,11 @@ from aoc.utilities import printlist
 class Solver(aoc.util.Solver):
     # Get list of all numbers or all words in input
     numberpattern = re.compile(r"-?\d+")
-    wordpattern = re.compile(r"[\w']+")
     # x1, y1, x2, y2 = map(int, pattern.findall(l))
     # mylist = list(map(int, pattern.findall(l)))
 
+    SEQUENCE = [0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+    
     def __init__(self, input: str):
         # sets self.input to the provided input
         super(Solver, self).__init__(input)
@@ -25,33 +26,22 @@ class Solver(aoc.util.Solver):
         sp = self.lines[0].split(" | ")
         self.N = len(list(map(int, self.numberpattern.findall(sp[0]))))
         self.copies = [1] * len(self.lines)
-        
-
-    def part_one(self) -> int:
-        ret = 0
-        for row in self.cards:
-            winners = set()
-            winners.update(row[1:self.N])
-            score = 0
-            for i in range(self.N, len(row)):
-                if row[i] in winners:
-                    if score == 0:
-                        score = 1
-                    else:
-                        score *= 2
-            ret += score
-            
-        return ret
-    
-    def part_two(self) -> int:
+        self.ret = 0
         for i, row in enumerate(self.cards):
             winners = set()
             numbers = set()
             winners.update(row[1:self.N])
             numbers.update(row[self.N:])
             count = len(winners.intersection(numbers))
-            # print(f"i: {i}, count = {count}")
+            if count:
+                self.ret += self.SEQUENCE[count]
+
             for j in range(i+1, i+count+1):
                 self.copies[j] += self.copies[i]
-                # print(f"Added {self.copies[i] * count} to {j}")
+
+
+    def part_one(self) -> int:
+        return self.ret
+    
+    def part_two(self) -> int:
         return sum(self.copies)
