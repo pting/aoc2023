@@ -40,7 +40,9 @@ def run(day: int, input, json: bool) -> None:
         # This is "safe" because we explicitly format the day param as a digit
         # and we control the lookup path. Click should also prevent non-integers
         # from being accepted for the DAY argument.
+        
         solver = importlib.import_module(name)
+
     except ModuleNotFoundError:
         import sys
 
@@ -64,6 +66,17 @@ def run(day: int, input, json: bool) -> None:
         # (according to the spec).
         sys.exit(0)
 
+    import cProfile, pstats, io
+    from pstats import SortKey
+    pr = cProfile.Profile()
+    pr.enable()
     # We've gotten here so it means we should have a solution for this day.
     # Solve and render the solution
     print(solver.Solver.solve(input.read()).to_string(json))
+    
+    pr.disable()
+    s = io.StringIO()
+    sortby = SortKey.CUMULATIVE
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print(s.getvalue())
