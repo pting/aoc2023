@@ -16,21 +16,13 @@ class Solver(aoc.util.Solver):
         N = 0
         SEQUENCE = [0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
         
-        for l in lines:
-            temp = l.split()
-            nums = []
-            for i, v in enumerate(temp):
-                if v.isdigit():
-                    nums.append(int(v))
-                if not N and v == "|":
-                    N = i - 2
-            cards.append(nums)
-        
         self.copies = [1] * len(lines)
         self.ret = 0
-        for i, row in enumerate(cards):
-            winners = set(row[:N])
-            numbers = set(row[N:])
+        
+        for i, l in enumerate(lines):
+            temp = l.split(":")[1].split("|")
+            winners = set(temp[0].split())
+            numbers = set(temp[1].split())
             count = len(winners.intersection(numbers))
             if count:
                 self.ret += SEQUENCE[count]
