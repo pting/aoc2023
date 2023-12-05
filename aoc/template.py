@@ -20,9 +20,11 @@ class Solver(aoc.util.Solver):
         
 
     def part_one(self) -> int:
-        # TODO: actually return the answer
-        return 0
+        ret = 0
+        
+        return ret
 
     def part_two(self) -> int:
-        # TODO: actually return the answer
-        return 0
+        ret = 0
+        
+        return ret
