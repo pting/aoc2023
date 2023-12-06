@@ -23,18 +23,10 @@ class Solver(aoc.util.Solver):
         
     def part_one(self) -> int:
         wins = 1
-        for time, target in self.races:
-            minv = (time - math.sqrt(time ** 2 - 4 * target)) / 2
-            maxv = (time + math.sqrt(time ** 2 - 4 * target)) / 2
-            minhold = math.floor(minv + 1)
-            maxhold = math.ceil(maxv - 1)
-            wins *= maxhold - minhold + 1
+        for t, tg in self.races:
+            wins *= math.ceil((t + math.sqrt(t ** 2 - 4 * tg)) / 2 - 1) - math.floor((t - math.sqrt(t ** 2 - 4 * tg)) / 2 + 1) + 1
         return wins
 
 
     def part_two(self) -> int:
-        minv = (self.race2[0] - math.sqrt(self.race2[0] ** 2 - 4 * self.race2[1])) / 2
-        maxv = (self.race2[0] + math.sqrt(self.race2[0] ** 2 - 4 * self.race2[1])) / 2
-        minhold = math.floor(minv + 1)
-        maxhold = math.ceil(maxv - 1)
-        return maxhold - minhold + 1
+        return math.ceil((self.race2[0] + math.sqrt(self.race2[0] ** 2 - 4 * self.race2[1])) / 2 - 1) - math.floor((self.race2[0] - math.sqrt(self.race2[0] ** 2 - 4 * self.race2[1])) / 2 + 1) + 1
