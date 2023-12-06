@@ -23,10 +23,12 @@ class Solver(aoc.util.Solver):
         
     def part_one(self) -> int:
         wins = 1
-        for t, tg in self.races:
-            wins *= math.ceil((t + math.sqrt(t ** 2 - 4 * tg)) / 2 - 1) - math.floor((t - math.sqrt(t ** 2 - 4 * tg)) / 2 + 1) + 1
+        for time, target in self.races:
+            square = math.sqrt(time ** 2 - 4 * target)
+            wins *= math.ceil((time + square) / 2 - 1) - math.floor((time - square) / 2 + 1) + 1
         return wins
 
 
     def part_two(self) -> int:
-        return math.ceil((self.race2[0] + math.sqrt(self.race2[0] ** 2 - 4 * self.race2[1])) / 2 - 1) - math.floor((self.race2[0] - math.sqrt(self.race2[0] ** 2 - 4 * self.race2[1])) / 2 + 1) + 1
+        square = math.sqrt(self.race2[0] ** 2 - 4 * self.race2[1])
+        return math.ceil((self.race2[0] + square) / 2 - 1) - math.floor((self.race2[0] - square) / 2 + 1) + 1
