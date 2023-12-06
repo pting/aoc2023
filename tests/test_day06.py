@@ -1,16 +1,16 @@
 import pytest
 
-from aoc.dayDAY import Solver
+from aoc.day06 import Solver
 from aoc.util import Solution
 
 
 #############################
 # ======= solutons =========#
 #############################
-EXAMPLE_PART_ONE = 0
-EXAMPLE_PART_TWO = 0
-PART_ONE = 0
-PART_TWO = 0
+EXAMPLE_PART_ONE = 288
+EXAMPLE_PART_TWO = 71503
+PART_ONE = 2756160
+PART_TWO = 34788142
 
 
 #############################
@@ -18,13 +18,13 @@ PART_TWO = 0
 #############################
 @pytest.fixture
 def example_input() -> str:
-    with open("inputs/dayDAY_example.txt", "r") as f:
+    with open("inputs/day06_example.txt", "r") as f:
         return f.read()
 
 
 @pytest.fixture
 def real_input() -> str:
-    with open("inputs/dayDAY.txt", "r") as f:
+    with open("inputs/day06.txt", "r") as f:
         return f.read()
 
 
@@ -72,7 +72,7 @@ def test_real_part_two(real_solver: Solver):
 #############################
 @pytest.mark.bench
 # @pytest.mark.donotwatch
-def test_dayDAY(benchmark, real_input: str):
+def test_day06(benchmark, real_input: str):
     expected = Solution(part_one=PART_ONE, part_two=PART_TWO)
     result = benchmark(Solver.solve, real_input)
 

@@ -69,6 +69,7 @@ def test_real_part_two(real_solver: Solver):
 # ======= benchmarks =======#
 #############################
 @pytest.mark.bench
+@pytest.mark.donotwatch
 def test_day05(benchmark, real_input: str):
     expected = Solution(part_one=PART_ONE, part_two=PART_TWO)
     result = benchmark(Solver.solve, real_input)

@@ -15,12 +15,16 @@ bench:
     poetry run pytest tests -m "bench" --benchmark-group-by=name
 
 # run all tests and benchmarks
+alltoday:
+    poetry run pytest tests -m "not donotwatch" --benchmark-group-by=name 
+
+# run all tests and benchmarks
 all:
-    poetry run pytest tests --benchmark-group-by=name
+    poetry run pytest tests --benchmark-group-by=name 
 
 # run all tests and benchmarks
 watch:
-    poetry run ptw . -m "not bench and not real"
+    poetry run ptw . -rP -m "not bench and not real and not donotwatch"
 
 # run the solver for the given DAY and INPUT
 run DAY INPUT:
