@@ -161,3 +161,7 @@ cython_debug/
 
 # pytest-benchmark
 .benchmarks/
+
+# Mac OS
+.DS_Store
+
