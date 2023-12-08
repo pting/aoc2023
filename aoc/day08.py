@@ -22,13 +22,13 @@ class Solver(aoc.util.Solver):
         bl = blocks[1].split("\n")
 
         self.curr = []
-        self.lenD = len(self.D)
         for l in bl:
-            l = l.replace(',', '').replace('(', '').replace(')', '').replace('=', '')
-            k, v1, v2 = l.split()
-            self.network[k] = (v1, v2)
-            if k[-1] == 'A':
-                self.curr.append(k)
+            if l:
+                l = l.replace(',', '').replace('(', '').replace(')', '').replace('=', '')
+                k, v1, v2 = l.split()
+                self.network[k] = (v1, v2)
+                if k[-1] == 'A':
+                    self.curr.append(k)
 
     def part_one(self) -> int:
         ret = 0
