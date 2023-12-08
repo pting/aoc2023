@@ -20,10 +20,9 @@ class Solver(aoc.util.Solver):
         self.D = blocks[0]
         self.network = {}
         bl = blocks[1].split("\n")
-        while not bl[-1]:
-            bl.pop()
 
         self.curr = []
+        self.lenD = len(self.D)
         for l in bl:
             k, v1, v2 = self.wordpattern.findall(l)
             self.network[k] = (v1, v2)
@@ -32,10 +31,9 @@ class Solver(aoc.util.Solver):
 
     def part_one(self) -> int:
         ret = 0
-        lenD = len(self.D)
         curr = "AAA"
         while curr != "ZZZ":
-            if self.D[ret % lenD] == "R":
+            if self.D[ret % self.lenD] == "R":
                 curr = self.network[curr][1]
             else:
                 curr = self.network[curr][0]
@@ -49,17 +47,13 @@ class Solver(aoc.util.Solver):
         for seed in self.curr:
             ret = 0
             seen = set()
-            lenD = len(self.D)
             while True:
-                dir = 1 if self.D[ret % lenD] == "R" else 0
+                dir = 1 if self.D[ret % self.lenD] == "R" else 0
                 seed = self.network[seed][dir]
                 ret += 1
                 if seed[-1] == "Z":
-                    if seed in seen:
-                        break
                     seen.add(seed)
                     multiples.append(ret)
-
-        # print(multiples)
+                    break
 
         return math.lcm(*multiples)
