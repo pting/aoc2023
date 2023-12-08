@@ -19,16 +19,15 @@ class Solver(aoc.util.Solver):
             self.D.append(0 if d == "L" else 1)
         
         self.network = {}
-        bl = blocks[1].split("\n")
+        bl = blocks[1].splitlines()
 
         self.curr = []
         for l in bl:
-            if l:
-                l = l.replace(',', '').replace('(', '').replace(')', '').replace('=', '')
-                k, v1, v2 = l.split()
-                self.network[k] = (v1, v2)
-                if k[-1] == 'A':
-                    self.curr.append(k)
+            l = l.replace(',', '').replace('(', '').replace(')', '').replace('=', '')
+            k, v1, v2 = l.split()
+            self.network[k] = (v1, v2)
+            if k[-1] == 'A':
+                self.curr.append(k)
 
     def part_one(self) -> int:
         ret = 0
