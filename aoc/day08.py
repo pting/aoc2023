@@ -3,6 +3,7 @@
 """08: PROBLEM NAME"""
 import aoc.util
 import math
+import itertools
 
 # all solutions should subclass the `Solver` exposed by `aoc.util`
 # this class MUST be called Solver for the CLI discovery to work
@@ -32,13 +33,12 @@ class Solver(aoc.util.Solver):
     def part_one(self) -> int:
         ret = 0
         curr = "AAA"
-        i = 0
-        while curr != "ZZZ":
-            curr = self.network[curr][self.D[i]]
+
+        for i in itertools.cycle(self.D):
+            if curr == "ZZZ":
+                return ret
+            curr = self.network[curr][i]
             ret += 1
-            i += 1
-            if i == self.lenD:
-                i = 0
         return ret
 
     def part_two(self) -> int:
@@ -48,14 +48,11 @@ class Solver(aoc.util.Solver):
         for seed in self.curr:
             ret = 0
             i = 0
-            while True:
-                seed = self.network[seed][self.D[i]]
-                ret += 1
+            for i in itertools.cycle(self.D):
                 if seed[-1] == 'Z':
                     multiples.append(ret)
                     break
-                i += 1
-                if i == self.lenD:
-                    i = 0
+                seed = self.network[seed][i]
+                ret += 1
 
         return math.lcm(*multiples)
