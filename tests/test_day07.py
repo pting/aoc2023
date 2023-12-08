@@ -42,7 +42,7 @@ def real_solver(real_input: str) -> Solver:
 # === tests for part one ===#
 #############################
 @pytest.mark.example
-# @pytest.mark.donotwatch
+@pytest.mark.donotwatch
 def test_example_part_one(example_solver: Solver):
     assert example_solver.part_one() == EXAMPLE_PART_ONE
 
@@ -57,7 +57,7 @@ def test_real_part_one(real_solver: Solver):
 # === tests for part two ===#
 #############################
 @pytest.mark.example
-# @pytest.mark.donotwatch
+@pytest.mark.donotwatch
 def test_example_part_two(example_solver: Solver):
     assert example_solver.part_two() == EXAMPLE_PART_TWO
 
