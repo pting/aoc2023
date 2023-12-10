@@ -20,14 +20,17 @@ class Solver(aoc.util.Solver):
             while True:
                 d = []
                 prev = None
+                same = True
                 for n in diffs[-1]:
                     if prev == None:
                         prev = n
                         continue
                     d.append(n - prev)
+                    if same and prev != n:
+                        same = False
                     prev = n
                 diffs.append(d)
-                if all(v == d[0] for v in d):
+                if same:
                     break
             
             first = []
