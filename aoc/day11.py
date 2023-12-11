@@ -16,43 +16,33 @@ class Solver(aoc.util.Solver):
         self.lines = self.input.splitlines()
         
         points = []
-        points2 = []
         colmask = [1] * len(self.lines[0])
+        rowmask = [0] * len(self.lines[0])
         rowadd = 0
         for r, row in enumerate(self.lines):
             empty = True
             for c, ch in enumerate(row):
                 if ch == '#':
                     colmask[c] = 0
-                    points.append([r + rowadd, c])
-                    points2.append([r + rowadd * 999999, c])
+                    points.append([r, c])
                     empty = False
             if empty:
                 rowadd += 1
-        
+            rowmask[r] = rowadd
+
         coladd = 0
         for i, n in enumerate(colmask):
             if n == 1:
                 coladd += 1
             colmask[i] = coladd
-        
-        newpoints = []
-        newpoints2 = []
-        for r, c in points:
-            newpoints.append([r, c + colmask[c]])
 
-        for r, c in points2:
-            newpoints2.append([r, c + (colmask[c] * 999999)])
-        
         self.ret1 = 0
-        for begin, end in itertools.combinations(newpoints, 2):
-            self.ret1 += abs(begin[0] - end[0]) + abs(begin[1] - end[1])
-            
         self.ret2 = 0
-        for begin, end in itertools.combinations(newpoints2, 2):
-            self.ret2 += abs(begin[0] - end[0]) + abs(begin[1] - end[1])
-           
-        
+        for b, e in itertools.combinations(points, 2):
+            # point = [r + rowmask[r], c + colmask[c]]
+            self.ret1 += abs((b[0] + rowmask[b[0]]) - (e[0] + rowmask[e[0]])) + abs((b[1] + colmask[b[1]]) - (e[1] + colmask[e[1]]))
+            self.ret2 += abs((b[0] + rowmask[b[0]] * 999999) - (e[0] + rowmask[e[0]] * 999999)) + abs((b[1] + colmask[b[1]] * 999999) - (e[1] + colmask[e[1]] * 999999))
+
 
     def part_one(self) -> int:
         return self.ret1
