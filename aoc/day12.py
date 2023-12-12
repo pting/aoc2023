@@ -51,7 +51,7 @@ class Solver(aoc.util.Solver):
             result += self.backtrack(spr[1:], nums)
             
         if spr[0] in "#?":
-            # Must have enough #'s left to cover the spr
+            # Must have enough of the number left to cover the #'s in spr
             # and the next num[0] chars in spr must be all "#"
             # and (there are no springs left) or (the next char after next num[0] chars is not "#")
             if nums[0] <= len(spr) and spr[:nums[0]].find(".") == -1 and (nums[0] == len(spr) or spr[nums[0]] != "#"):
