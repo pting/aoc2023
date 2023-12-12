@@ -20,7 +20,7 @@ class Solver(aoc.util.Solver):
 
             springs2 = springs + ("?" + springs) * 4
             nums2 = nums * 5
-            self.ret2 += self.backtrack(springs2, tuple(nums2))
+            self.ret2 += self.backtrack(springs2, nums2)
 
     ret1 = 0
     ret2 = 0
