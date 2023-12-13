@@ -12,6 +12,7 @@ class Solver(aoc.util.Solver):
     wordpattern = re.compile(r"[\w']+")
     # x1, y1, x2, y2 = map(int, pattern.findall(l))
     # mylist = list(map(int, pattern.findall(l)))
+    ret1, ret2 = 0, 0
 
     def __init__(self, input: str):
         # sets self.input to the provided input
@@ -20,11 +21,7 @@ class Solver(aoc.util.Solver):
         
 
     def part_one(self) -> int:
-        ret = 0
-        
-        return ret
+        return self.ret1
 
     def part_two(self) -> int:
-        ret = 0
-        
-        return ret
+        return self.ret2

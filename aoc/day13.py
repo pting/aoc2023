@@ -15,6 +15,16 @@ class Solver(aoc.util.Solver):
         for b in self.input.split("\n\n"):
             self.blocks.append(b.splitlines())
 
+        self.ret1 = 0
+        self.ret2 = 0
+        for b in self.blocks:
+            self.ret1 += self.fold(b) * 100
+            self.ret2 += self.fold2(b) * 100
+            
+            z = list(zip(*b))
+            self.ret1 += self.fold(z)
+            self.ret2 += self.fold2(z)
+            
 
     def fold(self, g):
         for i in range(1, len(g)):
@@ -45,23 +55,7 @@ class Solver(aoc.util.Solver):
         return 0
             
     def part_one(self) -> int:
-        ret1 = 0
-        for b in self.blocks:
-            r = self.fold(b)
-            ret1 += r * 100
-            
-            z = list(zip(*b))
-            f = self.fold(z)
-            ret1 += f
-        return ret1
+        return self.ret1
 
     def part_two(self) -> int:
-        ret2 = 0
-        for b in self.blocks:
-            r2 = self.fold2(b)
-            ret2 += r2 * 100
-            
-            z = list(zip(*b))
-            f2 = self.fold2(z)
-            ret2 += f2
-        return ret2
+        return self.ret2
