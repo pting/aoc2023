@@ -2,7 +2,6 @@
 
 """13: PROBLEM NAME"""
 import aoc.util
-from collections import OrderedDict
 
 # all solutions should subclass the `Solver` exposed by `aoc.util`
 # this class MUST be called Solver for the CLI discovery to work
@@ -23,8 +22,8 @@ class Solver(aoc.util.Solver):
             above.reverse()
             below = g[i:]
             
-            above = above[:len(below)]
             below = below[:len(above)]
+            above = above[:len(below)]
             
             if above == below:
                 return i
@@ -39,6 +38,8 @@ class Solver(aoc.util.Solver):
             count = 0
             for l1, l2 in zip(above, below):
                 count += sum(1 for a, b in zip(l1, l2) if a != b)
+                if count > 1:
+                    break
             if count == 1:
                 return i
         return 0
