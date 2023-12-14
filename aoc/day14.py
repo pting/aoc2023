@@ -2,7 +2,6 @@
 
 """14: PROBLEM NAME"""
 import aoc.util
-from aoc.utilities import printgrid
 
 # all solutions should subclass the `Solver` exposed by `aoc.util`
 # this class MUST be called Solver for the CLI discovery to work
@@ -51,7 +50,6 @@ class Solver(aoc.util.Solver):
                         if drop:
                             row[c - drop] = "O"
                             row[c] = "."
-        # printgrid(self.lines)
 
 
     def move_N(self):
@@ -59,7 +57,6 @@ class Solver(aoc.util.Solver):
         for c in range(self.L):
             drop = 0
             for r in range(len(grid)):
-                # print(r, c, grid[r][c])
                 match grid[r][c]:
                     case ".":
                         drop += 1
@@ -67,10 +64,8 @@ class Solver(aoc.util.Solver):
                         drop = 0
                     case "O":
                         if drop:
-                            # print(r, c, grid[r][c], "dropping to", r - drop, ",", c)
                             grid[r - drop][c] = "O"
                             grid[r][c] = "."
-        # printgrid(grid)
                     
                 
     def move_S(self):
@@ -78,7 +73,6 @@ class Solver(aoc.util.Solver):
         for c in range(self.L):
             drop = 0
             for r in range(len(grid) - 1, -1, -1):
-                # print(r, c, grid[r][c])
                 match grid[r][c]:
                     case ".":
                         drop += 1
@@ -86,14 +80,12 @@ class Solver(aoc.util.Solver):
                         drop = 0
                     case "O":
                         if drop:
-                            # print(r, c, grid[r][c], "dropping to", r - drop, ",", c)
                             grid[r + drop][c] = "O"
                             grid[r][c] = "."
-        # printgrid(self.lines)
          
 
     def move_E(self):
-        for r, row in enumerate(self.lines):
+        for row in self.lines:
             drop = 0
             for c in range(self.L - 1, -1, -1):
                 match row[c]:
@@ -116,33 +108,27 @@ class Solver(aoc.util.Solver):
 
         def buildkey():
             points = []
+            score = 0
             for r, row in enumerate(self.lines):
                 for c, ch in enumerate(row):
                     if ch == "O":
                         points.append((r, c))
-            return tuple(points)
+                        score += self.L - r
+            return tuple(points), score
         
-        key = buildkey()
-        seen = {key}
-        array = [key]
+        seen = {0: -1}
+        array = [0]
 
         i = 0
         while True:
             i += 1
             cycle()
-            key = buildkey()
+            key, score = buildkey()
             if key in seen:
                 break
-            seen.add(key)
-            array.append(key)
+            seen[key] = i
+            array.append((key, score))
 
-        key = buildkey()
-        first = array.index(key)
-        grid = array[(1000000000 - first) % (i - first) + first]
-
-        L = len(self.lines)
-        ret2 = 0
-        for r, _ in grid:
-            ret2 += L - r
-            
-        return ret2
+        first = seen[key]
+        _, score = array[(1000000000 - first) % (i - first) + first]
+        return score
