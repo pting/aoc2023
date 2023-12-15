@@ -20,11 +20,16 @@ class Solver(aoc.util.Solver):
         self.steps = self.lines[0].split(",")
 
         focals = {}
+        foc = -1
         for s in self.steps:
             self.ret1 += self.myhash(s)
-            
-            label = s[:2]
-            op = s[2]
+
+            if s.find("-") > 0:
+                label = s.split("-")[0]
+                op = "-"
+            else:
+                label, foc = s.split("=")
+                op = "="
             h = self.myhash(label)
 
             match op:
@@ -32,7 +37,6 @@ class Solver(aoc.util.Solver):
                     if label in self.boxes[h]:
                         self.boxes[h].remove(label)
                 case "=":
-                    label, foc = s.split("=")
                     if label not in self.boxes[h]:
                         self.boxes[h].append(label)
                     focals[label] = int(foc)
