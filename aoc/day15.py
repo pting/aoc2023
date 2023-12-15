@@ -13,38 +13,32 @@ class Solver(aoc.util.Solver):
     
     def __init__(self, input: str):
         # sets self.input to the provided input
-        super(Solver, self).__init__(input)
-        self.lines = self.input.splitlines()
-        
-        self.steps = self.lines[0].split(",")
+        super(Solver, self).__init__(input)        
+        self.steps = self.input.split(",")
+
         boxes = [[] for _ in range(256)]
         foc = -1
         self.focals = {}
         for s in self.steps:
             self.ret1 += self.myhash(s)
 
-            if s.find("-") > 0:
-                label = s.split("-")[0]
-                op = "-"
+            if (l := s.find("-")) > 0:
+                label = s[:l]
+                h = self.myhash(label)
+                if label in boxes[h]:
+                    boxes[h].remove(label)
             else:
                 label, foc = s.split("=")
-                op = "="
-            h = self.myhash(label)
-
-            match op:
-                case "-":
-                    if label in boxes[h]:
-                        boxes[h].remove(label)
-                case "=":
-                    if label not in boxes[h]:
-                        boxes[h].append(label)
-                    self.focals[label] = int(foc)
+                h = self.myhash(label)
+                if label not in boxes[h]:
+                    boxes[h].append(label)
+                self.focals[label] = foc
 
         self.ret2 = 0
 
         for b, d in enumerate(boxes, 1):
             for i, label in enumerate(d, 1):
-                self.ret2 += b * i * self.focals[label]
+                self.ret2 += b * i * int(self.focals[label])
 
         
     def myhash(self, s):
