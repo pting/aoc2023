@@ -2,6 +2,7 @@
 
 """14: PROBLEM NAME"""
 import aoc.util
+from aoc.utilities import printgrid
 
 # all solutions should subclass the `Solver` exposed by `aoc.util`
 # this class MUST be called Solver for the CLI discovery to work
@@ -19,10 +20,9 @@ class Solver(aoc.util.Solver):
     def part_one(self) -> int:
         z = [list(x) for x in zip(*self.lines)]
 
-        L = len(z[0])
         for row in z:
-            i, drop = 0, 0
-            for i in range(L):
+            drop = 0
+            for i in range(self.L):
                 match row[i]:
                     case ".":
                         drop += 1
@@ -32,9 +32,7 @@ class Solver(aoc.util.Solver):
                         if drop:
                             row[i - drop] = "O"
                             row[i] = "."
-                            self.ret1 += L - (i - drop)
-                        else:
-                            self.ret1 += L - i
+                        self.ret1 += self.L - (i - drop)
         return self.ret1
 
     def move_W(self):
@@ -56,7 +54,7 @@ class Solver(aoc.util.Solver):
         grid = self.lines
         for c in range(self.L):
             drop = 0
-            for r in range(len(grid)):
+            for r in range(self.L):
                 match grid[r][c]:
                     case ".":
                         drop += 1
@@ -72,7 +70,7 @@ class Solver(aoc.util.Solver):
         grid = self.lines
         for c in range(self.L):
             drop = 0
-            for r in range(len(grid) - 1, -1, -1):
+            for r in range(self.L - 1, -1, -1):
                 match grid[r][c]:
                     case ".":
                         drop += 1
@@ -85,7 +83,8 @@ class Solver(aoc.util.Solver):
          
 
     def move_E(self):
-        for row in self.lines:
+        score = 0
+        for r, row in enumerate(self.lines):
             drop = 0
             for c in range(self.L - 1, -1, -1):
                 match row[c]:
@@ -97,6 +96,8 @@ class Solver(aoc.util.Solver):
                         if drop:
                             row[c + drop] = "O"
                             row[c] = "."
+                        score += self.L - r
+        return score
 
 
     def part_two(self) -> int:
@@ -104,31 +105,25 @@ class Solver(aoc.util.Solver):
             self.move_N()
             self.move_W()
             self.move_S()
-            self.move_E()
+            return self.move_E()
+            
 
-        def buildkey():
-            points = []
-            score = 0
-            for r, row in enumerate(self.lines):
-                for c, ch in enumerate(row):
-                    if ch == "O":
-                        points.append((r, c))
-                        score += self.L - r
-            return tuple(points), score
-        
-        seen = {0: -1}
+        seen = {0: 0}
         array = [0]
 
-        i = 0
+        idx = 0
         while True:
-            i += 1
-            cycle()
-            key, score = buildkey()
-            if key in seen:
-                break
-            seen[key] = i
-            array.append((key, score))
+            idx += 1
+            score = cycle()
+            key = score
+            if idx > 4:
+                key = (score, array[-3])
+                if key in seen:
+                    break
+            seen[key] = idx
+            array.append(score)
 
         first = seen[key]
-        _, score = array[(1000000000 - first) % (i - first) + first]
-        return score
+        offset = (1000000000 - first) % (idx - first)
+        return(array[first + offset])
+        
