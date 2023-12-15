@@ -3,14 +3,13 @@
 """15: PROBLEM NAME"""
 import aoc.util
 import aoc.utilities
-from collections import OrderedDict
 
 # all solutions should subclass the `Solver` exposed by `aoc.util`
 # this class MUST be called Solver for the CLI discovery to work
 class Solver(aoc.util.Solver):
     # Get list of all numbers or all words in input
     ret1, ret2 = 0, 0
-    boxes = [[] for _ in range(256)]
+    focals = {}
     
     def __init__(self, input: str):
         # sets self.input to the provided input
@@ -18,9 +17,9 @@ class Solver(aoc.util.Solver):
         self.lines = self.input.splitlines()
         
         self.steps = self.lines[0].split(",")
-
-        focals = {}
+        boxes = [[] for _ in range(256)]
         foc = -1
+        self.focals = {}
         for s in self.steps:
             self.ret1 += self.myhash(s)
 
@@ -34,18 +33,18 @@ class Solver(aoc.util.Solver):
 
             match op:
                 case "-":
-                    if label in self.boxes[h]:
-                        self.boxes[h].remove(label)
+                    if label in boxes[h]:
+                        boxes[h].remove(label)
                 case "=":
-                    if label not in self.boxes[h]:
-                        self.boxes[h].append(label)
-                    focals[label] = int(foc)
+                    if label not in boxes[h]:
+                        boxes[h].append(label)
+                    self.focals[label] = int(foc)
 
         self.ret2 = 0
 
-        for b, d in enumerate(self.boxes, 1):
+        for b, d in enumerate(boxes, 1):
             for i, label in enumerate(d, 1):
-                self.ret2 += b * i * focals[label]
+                self.ret2 += b * i * self.focals[label]
 
         
     def myhash(self, s):
