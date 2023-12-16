@@ -2,11 +2,9 @@
 
 """16: PROBLEM NAME"""
 import aoc.util
-import aoc.utilities
 from collections import deque
 from multiprocessing import Pool
 
-lines = []
 def energized(params):
     sr, sc, sd, lines = params
     q = deque()
@@ -111,12 +109,14 @@ class Solver(aoc.util.Solver):
 
     def part_two(self) -> int:
         startlist = []
-        for r in range(len(self.lines)):
+        R = len(self.lines)
+        C = len(self.lines[0])
+        for r in range(R):
             startlist.append((r, 0, "E", self.lines))
-            startlist.append((r, len(self.lines[0]) - 1, "W", self.lines))
-        for c in range(len(self.lines[0])):
+            startlist.append((r, C - 1, "W", self.lines))
+        for c in range(C):
             startlist.append((0, c, "S", self.lines))
-            startlist.append((len(self.lines) - 1, c, "N", self.lines))
+            startlist.append((R - 1, c, "N", self.lines))
 
         with Pool() as pool:
             self.ret2 = max(pool.map(energized, startlist))
