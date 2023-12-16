@@ -6,11 +6,14 @@ from collections import deque
 from multiprocessing import Pool
 
 def energized(params):
-    sr, sc, sd, lines = params
+    global lines
+    global R
+    global C
+    sr, sc, sd = params
     q = deque()
     seen = {}
-    R = len(lines)
-    C = len(lines[0])
+    # R = len(lines)
+    # C = len(lines[0])
     
     q.append((sr, sc, sd))
     
@@ -19,8 +22,9 @@ def energized(params):
         # print(r, c, d)
         if not (r, c) in seen:
             seen[(r, c)] = []
-        if d in seen[(r, c)]:
+        elif d in seen[(r, c)]:
             continue
+
         seen[(r, c)].append(d)
         
         match d:
@@ -38,6 +42,8 @@ def energized(params):
                         if c > 0:
                             q.append((r, c - 1, "W"))
                     case _:
+                        if "S" in seen[(r, c)]:
+                            continue
                         if r > 0:
                             q.append((r - 1, c, "N"))
             case "S":
@@ -54,6 +60,8 @@ def energized(params):
                         if c > 0:
                             q.append((r, c - 1, "W"))
                     case _:
+                        if "N" in seen[(r, c)]:
+                            continue
                         if r + 1 < R:
                             q.append((r + 1, c, "S"))
             case "E":
@@ -70,6 +78,8 @@ def energized(params):
                         if r + 1 < R:
                             q.append((r + 1, c, "S"))
                     case _:
+                        if "W" in seen[(r, c)]:
+                            continue
                         if c + 1 < C:
                             q.append((r, c + 1, "E"))
             case "W":
@@ -86,9 +96,19 @@ def energized(params):
                         if r + 1 < R:
                             q.append((r + 1, c, "S"))
                     case _:
+                        if "E" in seen[(r, c)]:
+                            continue
                         if c > 0:
                             q.append((r, c - 1, "W"))
     return(len(seen))
+
+def init_p(grid):
+    global lines
+    global R
+    global C
+    lines = grid
+    R = len(grid)
+    C = len(grid[0])
 
 
 # all solutions should subclass the `Solver` exposed by `aoc.util`
@@ -101,23 +121,23 @@ class Solver(aoc.util.Solver):
         # sets self.input to the provided input
         super(Solver, self).__init__(input)
         self.lines = self.input.splitlines()
-        
-        self.ret1 = energized((0, 0, "E", self.lines))
 
     def part_one(self) -> int:
+        init_p(self.lines)
+        self.ret1 = energized((0, 0, "E"))
         return self.ret1
 
     def part_two(self) -> int:
-        startlist = []
+        startlist = deque()
         R = len(self.lines)
         C = len(self.lines[0])
         for r in range(R):
-            startlist.append((r, 0, "E", self.lines))
-            startlist.append((r, C - 1, "W", self.lines))
+            startlist.append((r, 0, "E"))
+            startlist.append((r, C - 1, "W"))
         for c in range(C):
-            startlist.append((0, c, "S", self.lines))
-            startlist.append((R - 1, c, "N", self.lines))
+            startlist.append((0, c, "S"))
+            startlist.append((R - 1, c, "N"))
 
-        with Pool() as pool:
+        with Pool(initializer=init_p, initargs=[self.lines]) as pool:
             self.ret2 = max(pool.map(energized, startlist))
         return self.ret2
