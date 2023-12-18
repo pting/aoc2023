@@ -17,59 +17,32 @@ class Solver(aoc.util.Solver):
         self.R = len(self.grid)
         self.C = len(self.grid[0])
 
-    def part_one(self) -> int:
+    def minheat(self, start, least, most):
+        queue = [(0, *start, 0,0)]
         seen = set()
-        q = [(0, 0, 0, 0, 0, 0)]
-
-        while q:
-            hl, r, c, dr, dc, n = heappop(q)
-            
+        while queue:
+            heat, r, c, pc, pr = heappop(queue)
             if r == self.R - 1 and c == self.C - 1:
-                return(hl)
+                return heat
 
-            if (r, c, dr, dc, n) in seen:
+            if (r, c, pc, pr) in seen:
                 continue
+            seen.add((r, c, pc, pr))
 
-            seen.add((r, c, dr, dc, n))
-            
-            if n < 3 and (dr, dc) != (0, 0):
-                nextr = r + dr
-                nextc = c + dc
-                if 0 <= nextr < self.R and 0 <= nextc < self.C:
-                    heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, dr, dc, n + 1))
+            # calculate turns only
+            for dr, dc in {(1,0), (0,1), (-1,0), (0,-1)} - {(pc,pr), (-pc,-pr)}:
+                nr, nc, h = r, c, heat
+                # go straight
+                for i in range(1, most + 1):
+                    nr, nc = nr + dr, nc + dc
+                    if 0 <= nr < self.R and 0 <= nc < self.C:
+                        h += self.grid[nr][nc]
+                        if i >= least:
+                            heappush(queue, (h, nr, nc, dr, dc))
 
-            for mover, movec in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-                if (mover, movec) != (dr, dc) and (mover, movec) != (-dr, -dc):
-                    nextr = r + mover
-                    nextc = c + movec
-                    if 0 <= nextr < self.R and 0 <= nextc < self.C:
-                        heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, mover, movec, 1))
+
+    def part_one(self) -> int:
+        return(self.minheat((0,0), 1, 3))
     
     def part_two(self) -> int:
-        seen = set()
-        q = [(0, 0, 0, 0, 0, 0)]
-
-        while q:
-            hl, r, c, dr, dc, n = heappop(q)
-            
-            if r == self.R - 1 and c == self.C - 1 and n >= 4:
-                return(hl)
-
-            if (r, c, dr, dc, n) in seen:
-                continue
-
-            seen.add((r, c, dr, dc, n))
-            
-            if n < 10 and (dr, dc) != (0, 0):
-                nextr = r + dr
-                nextc = c + dc
-                if 0 <= nextr < self.R and 0 <= nextc < self.C:
-                    heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, dr, dc, n + 1))
-
-            if n >= 4 or (dr, dc) == (0, 0):
-                for mover, movec in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-                    if (mover, movec) != (dr, dc) and (mover, movec) != (-dr, -dc):
-                        nextr = r + mover
-                        nextc = c + movec
-                        if 0 <= nextr < self.R and 0 <= nextc < self.C:
-                            heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, mover, movec, 1))
+        return(self.minheat((0,0), 4, 10))
