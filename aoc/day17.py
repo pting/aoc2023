@@ -19,10 +19,10 @@ class Solver(aoc.util.Solver):
 
     def part_one(self) -> int:
         seen = set()
-        pq = [(0, 0, 0, 0, 0, 0)]
+        q = [(0, 0, 0, 0, 0, 0)]
 
-        while pq:
-            hl, r, c, dr, dc, n = heappop(pq)
+        while q:
+            hl, r, c, dr, dc, n = heappop(q)
             
             if r == self.R - 1 and c == self.C - 1:
                 return(hl)
@@ -33,24 +33,24 @@ class Solver(aoc.util.Solver):
             seen.add((r, c, dr, dc, n))
             
             if n < 3 and (dr, dc) != (0, 0):
-                nr = r + dr
-                nc = c + dc
-                if 0 <= nr < self.R and 0 <= nc < self.C:
-                    heappush(pq, (hl + self.grid[nr][nc], nr, nc, dr, dc, n + 1))
+                nextr = r + dr
+                nextc = c + dc
+                if 0 <= nextr < self.R and 0 <= nextc < self.C:
+                    heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, dr, dc, n + 1))
 
-            for ndr, ndc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-                if (ndr, ndc) != (dr, dc) and (ndr, ndc) != (-dr, -dc):
-                    nr = r + ndr
-                    nc = c + ndc
-                    if 0 <= nr < self.R and 0 <= nc < self.C:
-                        heappush(pq, (hl + self.grid[nr][nc], nr, nc, ndr, ndc, 1))
+            for mover, movec in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+                if (mover, movec) != (dr, dc) and (mover, movec) != (-dr, -dc):
+                    nextr = r + mover
+                    nextc = c + movec
+                    if 0 <= nextr < self.R and 0 <= nextc < self.C:
+                        heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, mover, movec, 1))
     
     def part_two(self) -> int:
         seen = set()
-        pq = [(0, 0, 0, 0, 0, 0)]
+        q = [(0, 0, 0, 0, 0, 0)]
 
-        while pq:
-            hl, r, c, dr, dc, n = heappop(pq)
+        while q:
+            hl, r, c, dr, dc, n = heappop(q)
             
             if r == self.R - 1 and c == self.C - 1 and n >= 4:
                 return(hl)
@@ -61,15 +61,15 @@ class Solver(aoc.util.Solver):
             seen.add((r, c, dr, dc, n))
             
             if n < 10 and (dr, dc) != (0, 0):
-                nr = r + dr
-                nc = c + dc
-                if 0 <= nr < self.R and 0 <= nc < self.C:
-                    heappush(pq, (hl + self.grid[nr][nc], nr, nc, dr, dc, n + 1))
+                nextr = r + dr
+                nextc = c + dc
+                if 0 <= nextr < self.R and 0 <= nextc < self.C:
+                    heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, dr, dc, n + 1))
 
             if n >= 4 or (dr, dc) == (0, 0):
-                for ndr, ndc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-                    if (ndr, ndc) != (dr, dc) and (ndr, ndc) != (-dr, -dc):
-                        nr = r + ndr
-                        nc = c + ndc
-                        if 0 <= nr < self.R and 0 <= nc < self.C:
-                            heappush(pq, (hl + self.grid[nr][nc], nr, nc, ndr, ndc, 1))
+                for mover, movec in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+                    if (mover, movec) != (dr, dc) and (mover, movec) != (-dr, -dc):
+                        nextr = r + mover
+                        nextc = c + movec
+                        if 0 <= nextr < self.R and 0 <= nextc < self.C:
+                            heappush(q, (hl + self.grid[nextr][nextc], nextr, nextc, mover, movec, 1))
