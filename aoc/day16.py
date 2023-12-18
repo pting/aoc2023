@@ -115,7 +115,6 @@ def init_p(grid):
 # this class MUST be called Solver for the CLI discovery to work
 class Solver(aoc.util.Solver):
     # Get list of all numbers or all words in input
-    ret1, ret2 = 0, 0
 
     def __init__(self, input: str):
         # sets self.input to the provided input
@@ -124,8 +123,7 @@ class Solver(aoc.util.Solver):
 
     def part_one(self) -> int:
         init_p(self.lines)
-        self.ret1 = energized((0, 0, "E"))
-        return self.ret1
+        return energized((0, 0, "E"))
 
     def part_two(self) -> int:
         startlist = deque()
@@ -139,5 +137,5 @@ class Solver(aoc.util.Solver):
             startlist.append((R - 1, c, "N"))
 
         with Pool(initializer=init_p, initargs=[self.lines]) as pool:
-            self.ret2 = max(pool.map(energized, startlist))
-        return self.ret2
+            ret2 = max(pool.map(energized, startlist))
+        return ret2

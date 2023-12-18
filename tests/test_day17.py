@@ -1,16 +1,16 @@
 import pytest
 
-from aoc.day16 import Solver
+from aoc.day17 import Solver
 from aoc.util import Solution
 
 
 #############################
 # ======= solutons =========#
 #############################
-EXAMPLE_PART_ONE = 46
-EXAMPLE_PART_TWO = 51
-PART_ONE = 7034
-PART_TWO = 7759
+EXAMPLE_PART_ONE = 102
+EXAMPLE_PART_TWO = 94
+PART_ONE = 843
+PART_TWO = 1017
 
 
 #############################
@@ -18,13 +18,13 @@ PART_TWO = 7759
 #############################
 @pytest.fixture
 def example_input() -> str:
-    with open("inputs/day16_example.txt", "r") as f:
+    with open("inputs/day17_example.txt", "r") as f:
         return f.read()
 
 
 @pytest.fixture
 def real_input() -> str:
-    with open("inputs/day16.txt", "r") as f:
+    with open("inputs/day17.txt", "r") as f:
         return f.read()
 
 
@@ -42,7 +42,7 @@ def real_solver(real_input: str) -> Solver:
 # === tests for part one ===#
 #############################
 @pytest.mark.example
-@pytest.mark.donotwatch
+# @pytest.mark.donotwatch
 def test_example_part_one(example_solver: Solver):
     assert example_solver.part_one() == EXAMPLE_PART_ONE
 
@@ -57,7 +57,7 @@ def test_real_part_one(real_solver: Solver):
 # === tests for part two ===#
 #############################
 @pytest.mark.example
-@pytest.mark.donotwatch
+# @pytest.mark.donotwatch
 def test_example_part_two(example_solver: Solver):
     assert example_solver.part_two() == EXAMPLE_PART_TWO
 
@@ -72,7 +72,7 @@ def test_real_part_two(real_solver: Solver):
 #############################
 @pytest.mark.bench
 # @pytest.mark.donotwatch
-def test_day16(benchmark, real_input: str):
+def test_day17(benchmark, real_input: str):
     expected = Solution(part_one=PART_ONE, part_two=PART_TWO)
     result = benchmark(Solver.solve, real_input)
 
